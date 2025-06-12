@@ -1,28 +1,26 @@
--- Active: 1749669442624@@127.0.0.1@5432@petagenda
-
+-- Active: 1749757574490@@127.0.0.1@5432@petagenda
 -- Criando Tabela Cliente
 CREATE TABLE cliente(
 
     idcliente SERIAL PRIMARY KEY,
-    nome VARCHAR(100),
-    telefone VARCHAR(10),
-    email VARCHAR(255),
-    senha VARCHAR(255)
+    nome VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    senha VARCHAR(255) NOT NULL
 
 );
+
 
 -- Criando Tabela Admin 
 
 CREATE TABLE admin(
 
     idadmin SERIAL PRIMARY KEY,
-    nome VARCHAR(100),
-    email VARCHAR (255), 
-    telefone VARCHAR(20),
-    senha VARCHAR(255)
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR (255) NOT NULL , 
+    telefone VARCHAR(20) NOT NULL,
+    senha VARCHAR(255) NOT NULL
 );
-
--- DROP TABLE admin;
 
 -- Criando tabelasolicitação agendamento
 CREATE TABLE soliagenda(
@@ -31,6 +29,7 @@ CREATE TABLE soliagenda(
     dtsoli DATE DEFAULT NOW(),
     idadmin INT,
     confirmsoli BOOLEAN,
+    descricao VARCHAR(255),
     FOREIGN KEY (idadmin) REFERENCES admin(idadmin),
     FOREIGN KEY (idcliente) REFERENCES cliente(idcliente)
 );
@@ -46,5 +45,22 @@ CREATE TABLE agenda(
 
 );
 
--- DROP TABLE soliagenda;
--- DROP TABLE agenda;
+/*
+
+DROP TABLE cliente;
+DROP TABLE admin;
+DROP TABLE soliagenda;
+DROP TABLE agenda;
+
+
+-- FAZENDO DELETE BÁSICO
+
+DELETE FROM cliente;
+
+DELETE FROM admin;
+
+DELETE FROM soliagenda;
+
+DELETE FROM agenda;
+
+*/
