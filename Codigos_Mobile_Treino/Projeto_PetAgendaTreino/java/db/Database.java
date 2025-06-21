@@ -1,16 +1,14 @@
 // ESSA PASTA COM ESSE ARQUIVO É RESPONSÁVEL POR CRIAR O BANCO DE DADOS
 
 
-package Codigos_Mobile_Treino.Projeto_PetAgendaTreino.db; // caminho do nosso pacote onde o nosso banco de dados vai está
-
-import javax.print.DocFlavor.STRING;
+package Codigos_Mobile_Treino.Projeto_PetAgendaTreino.java.db; // caminho do nosso pacote onde o nosso banco de dados vai está
 
 // Realizando import da biblioteca nativa do sqlite
 
 import android.content.Context; // Traz uma classe base do Android usada para acessar quase tudo no sistema: arquivos, banco, UI, etc.
 import android.database.sqlite.SQLiteOpenHelper; // facilita o gerenciamento do banco de dados
 import android.database.sqlite.SQLiteDatabase; // Representa o banco de dados em si, permite executar SQL
-import android.database.sqlite.SQLException;   // Permite tratar exceções específicas de banco de dados
+import android.database.SQLException;   // Permite tratar exceções específicas de banco de dados
 import android.util.Log; // "Log" com L maiúsculo — classe para registrar logs no Logcat
 
 
@@ -19,7 +17,7 @@ public class Database extends SQLiteOpenHelper{
     // Declarando variáveis staticas que não podem ser alteradas (static + final)
 
     private static final String DB_NAME = "petagenda.sqlite";
-    private static final int DB_VESRION = 1; 
+    private static final int DB_VERSION = 1; 
 
     /*
         private é um encapsulador serve para modificar acesso que define quem pode
@@ -30,7 +28,7 @@ public class Database extends SQLiteOpenHelper{
 
 
     // Declarando uma instância para escrita e leitura para ser intanciada automaticamente no construtor
-    SQLiteDatabase db;
+    // SQLiteDatabase db -> Será feito no Main Activy;
 
     // declarando variáveis staticas que não podem ser alteradas e que vão comportar nossas tabelas
     // iremos colocar essas variáveis com um objeto String no método db.execSQL(variável_tabela) dentro de onCreate;
@@ -40,14 +38,15 @@ public class Database extends SQLiteOpenHelper{
         + "nome TEXT NOT NULL, "
         + "telefone TEXT NOT NULL, " // O + serve para concatenar strings
         + "email TEXT NOT NULL, "
-        + "senha TEXT NOT NULL);";
+        + "status BOOLEAN DEFAULT 1);";
 
     private static final String tableAdmin = "CREATE TABLE admin ( "
         + "idadmin INTEGER PRIMARY KEY AUTOINCREMENT, "
         + "nome TEXT NOT NULL, "
         + "telefone TEXT NOT NULL, "
         + "email TEXT NOT NULL, "
-        + "senha TEXT NOT NULL);";
+        + "senha TEXT NOT NULL,"
+        + "status BOOLEAN DEFAULT 1);";
 
     private static final String tableSoliAgenda = "CREATE TABLE soliagenda ("
         + "idsoliagenda INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -75,7 +74,7 @@ public class Database extends SQLiteOpenHelper{
 
     // O que importa é o Context
     public Database(Context context){
-        super(context,DB_NAME,null,DB_VESRION); 
+        super(context,DB_NAME,null,DB_VESION); 
 
         /* 
         
@@ -89,7 +88,7 @@ public class Database extends SQLiteOpenHelper{
 
         */
     
-        db = getWritableDatabase(); // instanciando o SQLiteDatabase automaticamente
+        /* db = getWritableDatabase(); Será feito no Main Activy*/
     
     };
 
@@ -108,7 +107,7 @@ public class Database extends SQLiteOpenHelper{
         
         } catch (java.sql.SQLException e) {
             System.out.println("Aconteceu alguma cagada aqui: " + e);
-            Log.e("DB_LOG", "OnCreate: " + e.getLocalizedMessage());
+            Log.e("DB_LOG", "Erro na criação do banco: " + e.getMessage());
         }
 
 
@@ -123,7 +122,30 @@ public class Database extends SQLiteOpenHelper{
         sobrescrevendo (redefinindo) um método que vem de uma classe pai ou de 
         uma interface.
      
+    */  
+
+    // Criando método onUpgrade par aquando o banco de dados mudar de estrutura
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Exemplo simples: descarta tabelas e recria
+        db.execSQL("DROP TABLE IF EXISTS cliente");
+        db.execSQL("DROP TABLE IF EXISTS admin");
+        db.execSQL("DROP TABLE IF EXISTS soliagenda");
+        db.execSQL("DROP TABLE IF EXISTS agenda");
+        onCreate(db);
+
+    /*
+        
+        Isso vai sobrescrever o banco de dados, caso a versão dele mude
+        por exemplo: Houve alteração na versão do Banco de dados
+    
     */
+
+
+
+}
+
+
 
 
 

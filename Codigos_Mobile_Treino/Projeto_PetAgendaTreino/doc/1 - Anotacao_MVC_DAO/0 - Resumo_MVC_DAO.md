@@ -1,4 +1,4 @@
-# RESUMO INSCRITO:
+# RESUMO ESCRITO:
 
 1. Model (Modelo)
     
@@ -181,69 +181,55 @@
 
         Deve ser o mais burra possível: só exibe ou coleta dados.
 
+## 📋 Resumo Tabular das Camadas da Arquitetura (MVC - Android)
 
-RESUMO TABELAR:
-
-    +------------+---------------------------------------------------------------------------------------------+
-    | Camada     | Responsabilidade                                                                            |
-    +------------+---------------------------------------------------------------------------------------------+
-    | View       | - Interface gráfica (Activities, Fragments, XMLs)                                           |
-    |            | - Coleta dados do usuário e exibe resultados                                                |
-    |            | - Não contém regras de negócio nem acesso ao banco                                          |
-    |            | - Ex: MainActivity.java, layouts XML                                                        |
-    +------------+---------------------------------------------------------------------------------------------+
-    | Controller | - Coordena a lógica da aplicação                                                            |
-    |            | - Recebe dados da View, instancia o Model e chama o DAO                                     |
-    |            | - Intermediário entre View e DAO                                                            |
-    |            | - Ex: ClienteController.java                                                                |
-    +------------+---------------------------------------------------------------------------------------------+
-    | Model      | - Representa os dados do domínio da aplicação                                               |
-    |            | - Apenas atributos + get/set, pode ter validações simples                                   |
-    |            | - Não acessa banco e não sabe de onde vêm os dados                                          |
-    |            | - Ex: Cliente.java, Admin.java                                                              |
-    +------------+---------------------------------------------------------------------------------------------+
-    | DAO        | - Responsável pelo CRUD no banco de dados                                                   |
-    |            | - Recebe objetos Model, usa DataBase (SQLiteOpenHelper) para acessar o banco                |
-    |            | - Retorna objetos preenchidos com dados da tabela                                           |
-    |            | - Ex: ClienteDAO.java, AdminDAO.java                                                        |
-    +------------+---------------------------------------------------------------------------------------------+
-    | Infra      | - Infraestrutura de apoio, como criação e manutenção do banco                               |
-    |            | - Contém a classe que estende SQLiteOpenHelper                                              |
-    |            | - Fornece instância de SQLiteDatabase para o DAO                                            |
-    |            | - Ex: DataBase.java                                                                          |
-    +------------+---------------------------------------------------------------------------------------------+
-
+| Camada      | Responsabilidades                                                                                      |
+|-------------|--------------------------------------------------------------------------------------------------------|
+| **View**    | - Interface gráfica: Activities, Fragments, XMLs                                                       |
+|             | - Exibe dados ao usuário e coleta inputs                                                               |
+|             | - Não contém regras de negócio nem acesso ao banco                                                     |
+|             | - Exemplos: `MainActivity.java`, arquivos XML (`activity_main.xml`, etc.)                             |
+| **Controller** | - Coordena a lógica da aplicação                                                                      |
+|             | - Recebe dados da View, instancia Models e interage com DAOs                                           |
+|             | - Atua como ponte entre View e persistência de dados                                                   |
+|             | - Exemplo: `ClienteController.java`                                                                    |
+| **Model**   | - Representa entidades do domínio da aplicação                                                         |
+|             | - Contém atributos e métodos `get/set`, podendo incluir validações simples                             |
+|             | - Não acessa banco de dados, nem usa recursos do Android SDK                                           |
+|             | - Exemplos: `Cliente.java`, `Admin.java`                                                               |
+| **DAO**     | - Realiza o CRUD no banco de dados                                                                     |
+|             | - Mapeia dados do SQLite para objetos Model                                                            |
+|             | - Utiliza `SQLiteDatabase`, `Cursor`, `ContentValues`                                                  |
+|             | - Exemplos: `ClienteDAO.java`, `AdminDAO.java`                                                         |
+| **Infra**   | - Suporte técnico (criação e manutenção do banco de dados)                                             |
+|             | - Contém a classe que estende `SQLiteOpenHelper`                                                       |
+|             | - Responsável por fornecer instância de `SQLiteDatabase` para o DAO                                    |
+|             | - Exemplo: `DataBase.java`                                                                             |
 
 RESUMO GRÁFICO:
 
-    View ───> Controller ───> DAO ───> Infra (DataBase)
-                │               ↑
-                ↓               │
-            Model <────────────
+View ───> Controller ───> Model ───> DAO ───> Infra (DataBase)
+         ↑                                                    ↓
+         └────────────── resultado/dados processados ─────────┘
 
+            
 RESUMO DA ESTRUTURA DO PROJETO:
 
-    app/
-    ├── db/                        <-- CAMADA INFRA
-    │   └── DataBase.java         <-- SQLiteOpenHelper com criação das tabelas
-    │
-    ├── model/                    <-- CAMADA MODEL
-    │   ├── Cliente.java
-    │   ├── Admin.java
-    │   └── Agenda.java
-    │
-    ├── dao/                      <-- CAMADA DAO
-    │   └── ClienteDAO.java       <-- CRUD com ContentValues e Cursor
-    │
-    ├── controller/               <-- CAMADA CONTROLLER
-    │   └── ClienteController.java
-    │
-    ├── view/                     <-- CAMADA VIEW
-    │   └── MainActivity.java     <-- Interface e interação com o usuário
-    │
-    └── res/
-        └── layout/
-            └── activity_main.xml <-- Layout da interface é onde ficam todos os arquivos de recurso não Java/Kotlin
-
-
- 
+app/
+│
+├── manifests/
+│   └── AndroidManifest.xml        ← Registro de activities, permissões, config. global
+│
+├── java/
+│   └── com.seupacote.app/
+│       ├── db/                    ← Camada Infra (DataBase.java)
+│       ├── model/                 ← Modelos de dados (Cliente.java, Admin.java)
+│       ├── dao/                   ← DAO (ClienteDAO.java)
+│       ├── controller/            ← Lógica de negócio (ClienteController.java)
+│       └── view/                  ← Interface (MainActivity.java)
+│
+├── res/
+│   └── layout/
+│       └── activity_main.xml      ← Layout da tela principal
+│
+└── Gradle Scripts/

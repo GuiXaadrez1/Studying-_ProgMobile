@@ -1,0 +1,1 @@
+Aqui nesta pasta armazenamos todas as nossas cores!

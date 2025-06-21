@@ -1,0 +1,6 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<resources>
+    <color name="blue">#FF0000FF</color>    <!-- Azul (ARGB) -->
+    <color name="yellow">#FFFFFF00</color>  <!-- Amarelo (ARGB) -->
+    <color name="white">#FFFFFFFF</color>   <!-- Branco (ARGB) -->
+</resources>
